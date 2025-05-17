@@ -17,28 +17,31 @@ type routeMap struct {
 
 var routes = make(map[string][]routeMap)
 
-func Handler(w netHttp.ResponseWriter, r *netHttp.Request) {
-	routesByMethod := routes[r.Method]
-	w.Header().Set("Content-Type", "application/json")
-	found := false
+func Handler(responseWriter netHttp.ResponseWriter, request *netHttp.Request) {
+	setJsonHeader(responseWriter)
 
-	for _, route := range routesByMethod {
-		if hasMatch(r.URL.Path, route.path) {
-			found = true
-			response := route.controller(&http.Request{HttpRequest: r, Route: route.path})
-			w.WriteHeader(response.Status)
-			json.NewEncoder(w).Encode(response.Data)
-			break // break on first match
+	for _, route := range routes[request.Method] {
+		if hasMatch(request.URL.Path, route.path) {
+			handleMatch(route, request, responseWriter)
+			return // break on first match
 		}
 	}
 
-	if found {
-		return
-	}
+	writeResponse(responseWriter, http.ResponseNotFound())
+}
 
-	responseNotFound := http.ResponseNotFound()
-	w.WriteHeader(responseNotFound.Status)
-	json.NewEncoder(w).Encode(responseNotFound.Data)
+func setJsonHeader(responseWriter netHttp.ResponseWriter) {
+	responseWriter.Header().Set("Content-Type", "application/json")
+}
+
+func handleMatch(route routeMap, request *netHttp.Request, responseWriter netHttp.ResponseWriter) {
+	response := route.controller(&http.Request{HttpRequest: request, Route: route.path})
+	writeResponse(responseWriter, response)
+}
+
+func writeResponse(responseWriter netHttp.ResponseWriter, response http.Response) {
+	responseWriter.WriteHeader(response.Status)
+	json.NewEncoder(responseWriter).Encode(response.Data)
 }
 
 func hasMatch(path string, route string) bool {
