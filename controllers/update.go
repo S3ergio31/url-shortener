@@ -1,11 +1,23 @@
 package controllers
 
 import (
+	"github.com/S3ergio31/url-shortener/application"
+	"github.com/S3ergio31/url-shortener/domain"
 	"github.com/S3ergio31/url-shortener/http"
+	"github.com/S3ergio31/url-shortener/infrastructure"
 )
 
 func Update(request *http.Request) http.Response {
-	id := request.Param("code")
+	var shortUpdaterDto domain.ShortUpdaterDto
+	request.Body(&shortUpdaterDto)
+	shortUpdaterDto.ShortCode = request.Param("code")
 
-	return http.ResponseOk(struct{ Id string }{Id: id})
+	short, err := application.ShortUpdater(shortUpdaterDto, infrastructure.BuildShortRepository())
+
+	if err != nil {
+		return http.ResponseNotFound()
+	}
+
+	return http.ResponseOk(short)
+
 }

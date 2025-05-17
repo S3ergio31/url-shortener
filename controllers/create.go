@@ -1,36 +1,20 @@
 package controllers
 
 import (
-	"time"
-
+	"github.com/S3ergio31/url-shortener/application"
+	"github.com/S3ergio31/url-shortener/domain"
 	"github.com/S3ergio31/url-shortener/http"
+	"github.com/S3ergio31/url-shortener/infrastructure"
 )
 
-type CreateBody struct {
-	Url string
-}
-
-type Short struct {
-	Id        int       `json:"id"`
-	Url       string    `json:"url"`
-	ShortCode string    `json:"short_code"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-}
-
 func Create(request *http.Request) http.Response {
-	var createBody CreateBody
-	request.Body(&createBody)
+	var shortCreatorDto domain.ShortCreatorDto
+	request.Body(&shortCreatorDto)
 
-	short := Short{
-		Id:        1,
-		Url:       createBody.Url,
-		ShortCode: "abc123",
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-	}
+	short := application.ShortCreator(
+		shortCreatorDto,
+		infrastructure.BuildShortRepository(),
+	)
 
-	// repository.save(short)
-
-	return http.ResponseOk(short)
+	return http.ResponseCreated(ToShortResponse(short))
 }

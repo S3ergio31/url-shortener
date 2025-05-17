@@ -14,16 +14,24 @@ type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
-func ResponseOk(data interface{}) Response {
+func ResponseOk(data any) Response {
 	return Response{
 		Status: netHttp.StatusOK,
 		Data:   data,
 	}
 }
 
-func ResponseCreated() Response {
+func ResponseCreated(data any) Response {
 	return Response{
 		Status: netHttp.StatusCreated,
+		Data:   data,
+	}
+}
+
+func ResponseAccepted(data any) Response {
+	return Response{
+		Status: netHttp.StatusAccepted,
+		Data:   data,
 	}
 }
 

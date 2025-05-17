@@ -6,6 +6,7 @@ import (
 
 	"github.com/S3ergio31/url-shortener/controllers"
 	"github.com/S3ergio31/url-shortener/routing"
+	"github.com/joho/godotenv"
 )
 
 /**
@@ -50,6 +51,8 @@ import (
  * status 200, 404
  */
 func main() {
+	loadEnv()
+
 	routing.Post("/shorten", controllers.Create)
 	routing.Get("/shorten/:code", controllers.Get)
 	routing.Put("/shorten/:code", controllers.Update)
@@ -59,4 +62,11 @@ func main() {
 	http.HandleFunc("/", routing.Handler)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func loadEnv() {
+	err := godotenv.Load()
+	if err != nil {
+		panic("Cannot load .env file")
+	}
 }
