@@ -28,13 +28,6 @@ func ResponseCreated(data any) Response {
 	}
 }
 
-func ResponseAccepted(data any) Response {
-	return Response{
-		Status: netHttp.StatusAccepted,
-		Data:   data,
-	}
-}
-
 func ResponseNoContent() Response {
 	return Response{
 		Status: netHttp.StatusNoContent,
@@ -53,7 +46,7 @@ func ResponseBadRequest() Response {
 
 func ResponseNotFound() Response {
 	return Response{
-		Status: netHttp.StatusOK,
+		Status: netHttp.StatusNotFound,
 		Data: ErrorResponse{
 			Status:  netHttp.StatusNotFound,
 			Message: "Not found",
