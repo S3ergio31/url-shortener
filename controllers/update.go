@@ -12,6 +12,10 @@ func Update(request *http.Request) http.Response {
 	request.Body(&shortUpdaterDto)
 	shortUpdaterDto.ShortCode = request.Param("code")
 
+	if shortUpdaterDto.Url == "" {
+		return http.ResponseBadRequest()
+	}
+
 	short, err := application.ShortUpdater(shortUpdaterDto, infrastructure.BuildShortRepository())
 
 	if err != nil {

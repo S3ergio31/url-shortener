@@ -11,6 +11,10 @@ func Create(request *http.Request) http.Response {
 	var shortCreatorDto domain.ShortCreatorDto
 	request.Body(&shortCreatorDto)
 
+	if shortCreatorDto.Url == "" {
+		return http.ResponseBadRequest()
+	}
+
 	short := application.ShortCreator(
 		shortCreatorDto,
 		infrastructure.BuildShortRepository(),
