@@ -12,7 +12,7 @@ type EventHandler func(Event)
 func Publish(event Event) {
 	switch event.(type) {
 	case ShortFound:
-		handle(event, []EventHandler{CountVisit})
+		handle(event, []EventHandler{VisitCounter})
 	}
 }
 

@@ -4,11 +4,11 @@ import (
 	"log"
 )
 
-func CountVisit(event Event) {
+func VisitCounter(event Event) {
 	shortFound := event.(ShortFound)
 	short, _ := shortFound.Repository.FindByShortCode(shortFound.ShortCode)
 	short.Count()
 	shortFound.Repository.Save(*short)
 
-	log.Printf("CountVisit: Event ShortFound with ShortCode=%s was proccessed", shortFound.ShortCode)
+	log.Printf("VisitCounter: Event ShortFound with ShortCode=%s was proccessed", shortFound.ShortCode)
 }
