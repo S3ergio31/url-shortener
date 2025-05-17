@@ -17,5 +17,5 @@ func Status(request *http.Request) http.Response {
 		return http.ResponseNotFound()
 	}
 
-	return http.ResponseAccepted(ToShortStatsResponse(*short))
+	return http.ResponseOk(ToShortStatsResponse(*short))
 }
