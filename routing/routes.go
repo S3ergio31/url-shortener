@@ -5,6 +5,7 @@ import (
 	netHttp "net/http"
 	"strings"
 
+	"github.com/S3ergio31/url-shortener/controllers"
 	"github.com/S3ergio31/url-shortener/http"
 )
 
@@ -73,18 +74,26 @@ func add(route string, method string, controller Controller) {
 	routes[method] = append(routesByMethod, routeMap{route, controller})
 }
 
-func Get(route string, controller Controller) {
+func get(route string, controller Controller) {
 	add(route, "GET", controller)
 }
 
-func Post(route string, controller Controller) {
+func post(route string, controller Controller) {
 	add(route, "POST", controller)
 }
 
-func Put(route string, controller Controller) {
+func put(route string, controller Controller) {
 	add(route, "PUT", controller)
 }
 
-func Delete(route string, controller Controller) {
+func delete(route string, controller Controller) {
 	add(route, "DELETE", controller)
+}
+
+func RegisterRoutes() {
+	post("/shorten", controllers.Create)
+	get("/shorten/:code", controllers.Get)
+	put("/shorten/:code", controllers.Update)
+	delete("/shorten/:code", controllers.Delete)
+	get("/shorten/:code/stats", controllers.Status)
 }
