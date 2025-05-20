@@ -21,15 +21,11 @@ type Short struct {
 	ShortCode   string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	accessCount int
+	AccessCount int
 }
 
 func (s *Short) Count() {
-	s.accessCount++
-}
-
-func (s *Short) AccessCount() int {
-	return s.accessCount
+	s.AccessCount++
 }
 
 type ShortCode struct{}

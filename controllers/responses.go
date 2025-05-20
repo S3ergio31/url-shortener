@@ -33,6 +33,6 @@ func ToShortResponse(short domain.Short) ShortResponse {
 func ToShortStatsResponse(short domain.Short) ShortStatsResponse {
 	return ShortStatsResponse{
 		ShortResponse: ToShortResponse(short),
-		AccessCount:   short.AccessCount(),
+		AccessCount:   short.AccessCount,
 	}
 }

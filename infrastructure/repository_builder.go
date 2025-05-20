@@ -13,6 +13,11 @@ func BuildShortRepository() domain.ShortRepository {
 		return BuildInMemoryRepository()
 	}
 
+	if os.Getenv("REPOSITORY_DRIVER") == "mysql" {
+		log.Println("BuildShortRepository -> BuildMySqlRepository")
+		return BuildMySqlRepository()
+	}
+
 	log.Println("BuildShortRepository -> Dafault repository driver 'memory'")
 	return BuildInMemoryRepository()
 }
